@@ -10,3 +10,6 @@
 .venv
 poetry.lock
 .cenv
+data/ISO11783_2.DBC
+data/ISO11783.DBC
+data/J1939.DBC
