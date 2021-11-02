@@ -1,6 +1,8 @@
 <MyLayout>
     capacity_slider_value: capacity_slider_value
     quality_slider_value: quality_slider_value
+    quality_progress: quality_progress
+    capacity_progress: capacity_progress
     BoxLayout:
         id: main
         orientation: "vertical"
@@ -8,27 +10,49 @@
         BoxLayout:
             id: top
             orientation: "horizontal"
+            Label:
+                size_hint: 0.1, 1
             BoxLayout:
-                id: capacity
-                size_hint: 0.3, 1
                 orientation: "vertical"
-                Label:
-                    id: capacity_slider_label
-                    size_hint: 1, 0.1
-                    text: "Capacity"
-                    font_size: 32
-                Slider:
+                BoxLayout:
+                    id: capacity
+                    orientation: "horizontal"
+                    Label:
+                        id: capacity_slider_label
+                        text: "Capacity"
+                        font_size: 32
+                    Label:
+                        id: capacity_slider_value
+                        text: "0"
+                        font_size: 32
+                ProgressBar:
+                    id: capacity_progress
                     min: 1
                     max: 100
-                    step: 1
-                    orientation: "vertical"
-                    sensitivity: "handle"
-                    on_value: root.slide_capacity(*args)
+                    value: 1
+                BoxLayout:
+                    id: quality
+                    orientation: "horizontal"
+                    Label:
+                        id: quality_slider_label
+                        text: "Quality"
+                        font_size: 32
+                    Label:
+                        id: quality_slider_value
+                        text: "0"
+                        font_size: 32
+                ProgressBar:
+                    id: quality_progress
+                    min: 1
+                    max: 100
+                    value: 1
                 Label:
-                    id: capacity_slider_value
-                    size_hint: 1, 0.1
-                    text: "0"
-                    font_size: 32
+                    id: kmh
+                    text: "0km/h"
+                    font_size: 64
+            Label:
+                size_hint: 0.1, 1
+
             BoxLayout:
                 orientation: "vertical"
                 Label:
@@ -42,28 +66,6 @@
                             pos: self.pos
                             size: self.size
                 Label:
-                    id: kmh
-                    size_hint: 1, 0.2
-                    text: "0km/h"
-                    font_size: 64
-            BoxLayout:
-                id: quality
-                size_hint: 0.3, 1
-                orientation: "vertical"
-                Label:
-                    id: quality_slider_label
                     size_hint: 1, 0.1
-                    text: "Quality"
-                    font_size: 32
-                Slider:
-                    min: 1
-                    max: 100
-                    step: 1
-                    orientation: "vertical"
-                    sensitivity: "handle"
-                    on_value: root.slide_quality(*args)
-                Label:
-                    id: quality_slider_value
-                    size_hint: 1, 0.1
-                    text: "0"
-                    font_size: 32
+            Label:
+                size_hint: 0.1, 1
