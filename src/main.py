@@ -1,8 +1,14 @@
 import can
 import cantools
+import os
 
-db = cantools.db.load_file('/home/bresilla/data/code/WUR/r4c/cansim/data/sample.dbc')
-bus = can.interface.Bus(channel='vcan0', bustype='socketcan', bitrate=250000, fd=True)
+
+db = cantools.db.load_file('data/sample.dbc')
+if os.name == 'nt':
+    bus = can.interface.Bus(channel='PCAN_USBBUS1', bustype='pcan', bitrate=250000, fd=True)
+else:
+    bus = can.interface.Bus(channel='vcan0', bustype='socketcan', bitrate=250000, fd=True)
+
 
 clock = 0.5
 quality = 0
@@ -30,7 +36,7 @@ def callback(dt):
     send2can(can.Message(arbitration_id=PD_TC.frame_id, data=PD_TC.encode({'AreaPerTimeCapacity':capacity}), is_fd=True))
     send2can(can.Message(arbitration_id=EEC_MSG.frame_id, data=EEC_MSG.encode({'EngineSpeed':quality}), is_fd=True))
 
-Builder.load_file("/home/bresilla/data/code/WUR/r4c/cansim/src/control.kv")
+Builder.load_file("src/control.kv")
 class MyLayout(Widget):
     def slide_capacity(self, *args):
         global capacity
