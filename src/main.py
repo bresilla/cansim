@@ -5,7 +5,8 @@ import os
 
 db = cantools.db.load_file('data/sample.dbc')
 if os.name == 'nt':
-    bus = can.interface.Bus(channel='PCAN_USBBUS1', bustype='pcan', bitrate=250000, fd=True)
+    #bus = can.interface.Bus(channel='PCAN_USBBUS1', bustype='pcan', bitrate=250000, fd=True)
+    bus = can.interface.Bus(channel=0, bustype='vector', bitrate=250000, fd=True)
 else:
     bus = can.interface.Bus(channel='vcan0', bustype='socketcan', bitrate=250000, fd=True)
 
