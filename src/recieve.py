@@ -1,6 +1,6 @@
 import can
 import cantools
-from functools import partial
+import os
 
 db = cantools.db.load_file('/home/bresilla/data/code/WUR/r4c/cansim/data/sample.dbc')
 if os.name == 'nt':
