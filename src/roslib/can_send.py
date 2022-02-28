@@ -10,10 +10,10 @@ client.run()
 print(client.is_connected)
 
 if os.name == 'nt':
-    #bus = can.interface.Bus(channel='PCAN_USBBUS1', bustype='pcan', bitrate=250000, fd=True)
-    bus = can.interface.Bus(channel=0, bustype='vector', bitrate=250000, fd=True)
+    #bus = can.interface.Bus(channel='PCAN_USBBUS1', bustype='pcan', bitrate=250000)
+    bus = can.interface.Bus(channel=0, bustype='vector', bitrate=500000)
 else:
-    bus = can.interface.Bus(channel='vcan0', bustype='socketcan', bitrate=500000, fd=True)
+    bus = can.interface.Bus(channel='vcan0', bustype='socketcan', bitrate=500000)
 
 
 amber_string="""VERSION ""
@@ -48,10 +48,10 @@ red_msg = cantools.db.load_string(red_string, 'dbc').get_message_by_name("DM1")
 capacity_msg = cantools.db.load_string(capacity_string, 'dbc').get_message_by_name("PD_Loader")
 quality_msg = cantools.db.load_string(quality_string, 'dbc').get_message_by_name("PD_Loader")
 
-amber_topic=roslibpy.Topic(client,'/triger_flag','std_msgs/Bool')
-red_topic=roslibpy.Topic(client,'/triger_flag','std_msgs/Bool')
-capacity_topic=roslibpy.Topic(client,'/triger_flag','std_msgs/Int')
-quality_topic=roslibpy.Topic(client,'/triger_flag','std_msgs/Int')
+amber_topic=roslibpy.Topic(client,'/lsp1/camera_on_flag','std_msgs/Bool')
+red_topic=roslibpy.Topic(client,'/lsp1/emergency_stop_flag','std_msgs/Bool')
+capacity_topic=roslibpy.Topic(client,'/lsp1/capacity','std_msgs/Int16')
+quality_topic=roslibpy.Topic(client,'/lsp1/quality','std_msgs/Int16')
 
 from kivy.app import App
 from kivy.uix.widget import Widget
