@@ -72,11 +72,17 @@ def send2topic(topic, message):
     print(message)
 
 def callback(dt):
+    print("CAN:")
     send2can(can.Message(arbitration_id=capacity_msg.frame_id, data=capacity_msg.encode({'Capacity':capacity})))
     send2can(can.Message(arbitration_id=quality_msg.frame_id, data=quality_msg.encode({'Quality':quality})))
     send2can(can.Message(arbitration_id=amber_msg.frame_id, data=amber_msg.encode({'FlashAmberWarningLamp':int(cameras)})))
     send2can(can.Message(arbitration_id=red_msg.frame_id, data=red_msg.encode({'FlashRedStopLamp':int(emergency)})))
-    print("-----")
+    print("BRIDGE:")
+    send2topic(capacity_topic, capacity)
+    send2topic(quality_topic, quality)
+    send2topic(amber_topic, cameras)
+    send2topic(red_topic, emergency)
+    print("-------\n")
 
 Builder.load_file("src/roslib/control.kv")
 class MyLayout(Widget):
@@ -84,27 +90,27 @@ class MyLayout(Widget):
         global capacity
         capacity = int(args[1])
         self.capacity_slider_value.text = str(capacity)
-        send2topic(capacity_topic, capacity)
-        send2can(can.Message(arbitration_id=capacity_msg.frame_id, data=capacity_msg.encode({'Capacity':capacity})))
+        #send2topic(capacity_topic, capacity)
+        #send2can(can.Message(arbitration_id=capacity_msg.frame_id, data=capacity_msg.encode({'Capacity':capacity})))
 
     def slide_quality(self, *args):
         global quality
         quality = int(args[1])
         self.quality_slider_value.text = str(quality)
-        send2topic(quality_topic, quality)
-        send2can(can.Message(arbitration_id=quality_msg.frame_id, data=quality_msg.encode({'Quality':quality})))
+        # send2topic(quality_topic, quality)
+        # send2can(can.Message(arbitration_id=quality_msg.frame_id, data=quality_msg.encode({'Quality':quality})))
 
     def switch_cameras(self, switchObject, switchValue):
         global cameras
         cameras = bool(switchValue)
-        send2topic(amber_topic, cameras)
-        send2can(can.Message(arbitration_id=amber_msg.frame_id, data=amber_msg.encode({'FlashAmberWarningLamp':int(cameras)})))
+        # send2topic(amber_topic, cameras)
+        # send2can(can.Message(arbitration_id=amber_msg.frame_id, data=amber_msg.encode({'FlashAmberWarningLamp':int(cameras)})))
  
     def button_emergency(self):
         global emergency
         emergency = not emergency
-        send2topic(red_topic, emergency)
-        send2can(can.Message(arbitration_id=red_msg.frame_id, data=red_msg.encode({'FlashRedStopLamp':int(emergency)})))
+        # send2topic(red_topic, emergency)
+        # send2can(can.Message(arbitration_id=red_msg.frame_id, data=red_msg.encode({'FlashRedStopLamp':int(emergency)})))
 
 class MyApp(App):
     def build(self):
