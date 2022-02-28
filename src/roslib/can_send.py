@@ -11,7 +11,7 @@ print(client.is_connected)
 
 if os.name == 'nt':
     #bus = can.interface.Bus(channel='PCAN_USBBUS1', bustype='pcan', bitrate=250000)
-    bus = can.interface.Bus(channel=0, bustype='vector', bitrate=500000)
+    bus = can.interface.Bus(channel=0, bustype='vector', bitrate=500000, app_name="CANoe")
 else:
     bus = can.interface.Bus(channel='vcan0', bustype='socketcan', bitrate=500000)
 
