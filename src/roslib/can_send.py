@@ -28,14 +28,14 @@ BO_ 2566834709 DM1: 8 SEND
 
 capacity_string="""VERSION ""
 BO_ 2365194522 PD_Loader: 8 SEND
- SG_ Capacity : 32|32@1+ (1,0) [0|4294967295] "mm2/s"  Loader
+    SG_ Capacity : 32|32@1+ (1,0) [0|4294967295] "mm2/s"  Loader
 """
 
-quality_string="""VERSION ""
+quality_strcaning="""VERSION ""
 BO_ 2365194522 PD_Loader: 8 SEND
- SG_ Quality : 0|32@1+ (1,0) [0|100] "%"  Loader
+    SG_ Quality : 0|32@1+ (1,0) [0|100] "%"  Loader
 """
-
+send2can
 
 clock = 0.5
 quality = 0
