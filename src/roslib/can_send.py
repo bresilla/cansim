@@ -35,7 +35,6 @@ quality_strcaning="""VERSION ""
 BO_ 2365194522 PD_Loader: 8 SEND
     SG_ Quality : 0|32@1+ (1,0) [0|100] "%"  Loader
 """
-send2can
 
 clock = 0.5
 quality = 0
