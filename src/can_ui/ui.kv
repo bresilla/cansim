@@ -1,0 +1,71 @@
+<MyLayout>
+    capacity_slider_value: capacity_slider_value
+    quality_slider_value: quality_slider_value
+    quality_progress: quality_progress
+    capacity_progress: capacity_progress
+    BoxLayout:
+        id: main
+        orientation: "vertical"
+        size: root.width, root.height
+        BoxLayout:
+            id: top
+            orientation: "horizontal"
+            Label:
+                size_hint: 0.1, 1
+            BoxLayout:
+                orientation: "vertical"
+                BoxLayout:
+                    id: capacity
+                    orientation: "horizontal"
+                    Label:
+                        id: capacity_slider_label
+                        text: "Capacity"
+                        font_size: 32
+                    Label:
+                        id: capacity_slider_value
+                        text: "0"
+                        font_size: 32
+                ProgressBar:
+                    id: capacity_progress
+                    min: 1
+                    max: 100
+                    value: 1
+                BoxLayout:
+                    id: quality
+                    orientation: "horizontal"
+                    Label:
+                        id: quality_slider_label
+                        text: "Quality"
+                        font_size: 32
+                    Label:
+                        id: quality_slider_value
+                        text: "0"
+                        font_size: 32
+                ProgressBar:
+                    id: quality_progress
+                    min: 1
+                    max: 100
+                    value: 1
+                Label:
+                    id: kmh
+                    text: "0km/h"
+                    font_size: 64
+            Label:
+                size_hint: 0.1, 1
+
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    size_hint: 1, 0.1
+                BoxLayout:
+                    id: camera
+                    canvas:
+                        Color:
+                            rgba: 216 / 255., 195 / 255., 88 / 255., 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                Label:
+                    size_hint: 1, 0.1
+            Label:
+                size_hint: 0.1, 1

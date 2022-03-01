@@ -2,3 +2,4 @@ python-lsp-server
 python-can
 cantools
 canmatrix
+opencv
