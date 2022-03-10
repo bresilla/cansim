@@ -4,6 +4,8 @@ import os
 import roslibpy
 import sys
 import time
+import cv2
+from pyzbar.pyzbar import decode
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -18,12 +20,12 @@ cameras = True
 
 
 client = roslibpy.Ros(host=sys.argv[1], port=int(sys.argv[2]))
-while not client.is_connected:
-    try:
-        client.run()
-    except:
-        time.sleep(5)
-        print("NOT CONNECTED")
+# while not client.is_connected:
+#     try:
+#         client.run()
+#     except:
+#         time.sleep(5)
+#         print("NOT CONNECTED")
 
 if os.name == 'nt':
     bus = can.interface.Bus(channel=3, bustype='vector', app_name="CANoe")
@@ -58,6 +60,9 @@ latitude_topic = roslibpy.Topic(client, '/lsp1/latitude', 'std_msgs/Float32')
 speed_topic = roslibpy.Topic(client, '/lsp1/speed', 'std_msgs/Float32')
 odometry_topic = roslibpy.Topic(client, '/lsp1/odometry', 'nav_msgs/Odometry')
 
+r4c_topic = roslibpy.Topic(client, '/r4c_lsp1', 'r4c_interfaces/msg/R4C')
+
+vid = cv2.VideoCapture(0)
 
 def send2can(message):
     try:
@@ -82,15 +87,34 @@ def send2topic(topic, message):
     print(message)
 
 
+def barcoder():
+    global emergency
+    global cameras
+    ret, frame = vid.read()
+    barcodes = decode(frame)
+    for barcode in barcodes:
+        label = barcode.data.decode('utf-8')
+        if label == "ASTART":
+            cameras = True
+        elif label == "ASTOP":
+            cameras = False
+        elif label == "RSTART":
+            emergency = True
+        elif label == "RSTOP":
+            emergency = False
+
+
 def callback(dt):
     print("CAN:")
+    barcoder()
     send2can(can.Message(arbitration_id=pdl.frame_id, data=pdl.encode({'Capacity': capacity, 'Quality': quality})))
     send2can(can.Message(arbitration_id=dm1.frame_id, data=dm1.encode({'FlashAmberWarningLamp': int(cameras), 'FlashRedStopLamp': int(emergency)})))
 
+
+    print("BRIDGE:")
     gnss_message = recv4can(gnss)
     gbsd_message = recv4can(gbsd)
 
-    print("BRIDGE:")
     send2topic(capacity_topic, {'data': capacity})
     send2topic(quality_topic, {'data': quality})
     send2topic(amber_topic, {'data': cameras})
@@ -106,10 +130,12 @@ def callback(dt):
         },
         "header": {"frame_id": "odom"}
     })
+    send2topic(r4c_topic, {"longitude": float(gnss_message["Longitude"]), "latitude": float(gnss_message["Latitude"]), "speed": int(gbsd_message["GroundBasedMachineSpeed"])})
+
     print("-------\n")
 
 
-Builder.load_file("src/roslib/control.kv")
+Builder.load_file("src/roslib/lsp1/control.kv")
 
 
 class MyLayout(Widget):
